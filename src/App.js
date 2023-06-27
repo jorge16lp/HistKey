@@ -1,35 +1,241 @@
-import React, {
-  useEffect,
-  useState
-} from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React, {useState} from 'react'
+import { BrowserRouter, Link, Routes, Route } from 'react-router-dom'
+import './App.scss'
+import Header from './components/Header'
+import Home from './components/Home'
+import { FaEdit, FaTrash } from 'react-icons/fa'
+import { TiTick } from 'react-icons/ti'
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 
-const list1 = ['keroro', 'digimon']
-
-const list2 = ['inazuma eleven', 'doraemon']
+const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
+var text = ''
 
 export default function App() {
-  const [lists, setList] = useState(list1)
+  const [keywords, setKeywords] = useState([])
+  const [questions, setQuestions] = useState([])
 
-  useEffect(function () {
-    setTimeout(function () {
-      setList(list2)
-    }, 2000)
-  }, [])
+  const fetchData = async () => {
+    try {
+      text = window.document.getElementById('text').value
+      const response = await fetch(endPoint + '/keywords', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json'
+         },
+        body: JSON.stringify({ 
+          theText: text
+        }) 
+      });
+      const data = await response.json();
+      setKeywords(data.keywords)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchQuestions = async () => {
+    try {
+      var repetitions = window.document.getElementsByClassName('key-repetitions')
+      var keysMap = new Map()
+      for (var i = 0; i < repetitions.length; i++)
+        keysMap.set(keywords[i], repetitions[i].textContent)
+      const response = await fetch(endPoint + '/questions', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json'
+         },
+        body: JSON.stringify({ 
+          theText: text,
+          keywords: Array.from(keysMap.keys()),
+          repetitions: Array.from(keysMap.values())
+        }) 
+      });
+      const data = await response.json();
+      setQuestions(data.questions)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const chargeDemoText = async () => {
+    try {
+      const response = await fetch(endPoint + '/read-demo-file', {
+        method: 'GET',
+        headers: { 
+          'Content-Type': 'application/json'
+         }
+      });
+      const data = await response.json()
+      window.document.getElementById('text').value = data.demoText
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const editQuestion = async (id) => {
+    try {
+      // console.log('editando la q: ', id)
+
+      var ps = window.document.getElementById(id).children[0].children
+      for (var i=0; i < 5; i++) 
+        ps[i].contentEditable = true
+
+      window.document.getElementById(id).children[1].children[1].hidden = true
+      window.document.getElementById(id).children[1].children[0].hidden = false
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const acceptQuestion = async (id) => {
+    try {
+      // console.log('aceptando la q: ', id)
+
+      var ps = window.document.getElementById(id).children[0].children
+      for (var i=0; i < 5; i++) 
+        ps[i].contentEditable = false
+
+      window.document.getElementById(id).children[1].children[1].hidden = false
+      window.document.getElementById(id).children[1].children[0].hidden = true
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteQuestion = async (id) => {
+    try {
+      // console.log('eliminando la q: ', id)
+
+      var question = window.document.getElementById(id)
+      const questionParent = question.parentNode
+      questionParent.removeChild(question)
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const less = async (id) => {
+    try {
+      var keyReps = parseInt(window.document.getElementById(id).textContent) - 1
+      if (keyReps >= 0)
+        window.document.getElementById(id).textContent = "" + keyReps
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const more = async (id) => {
+    try {
+      var keyReps = parseInt(window.document.getElementById(id).textContent) + 1
+      window.document.getElementById(id).textContent = "" + keyReps
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <header>HistKey</header>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-           Aquí comienza una nueva era, la de keroro
-        </p>
-        {
-          lists.map(name => <p>{name}</p>)
-        }
-      </header>
+      <Header />
+      <BrowserRouter>
+        <main className="App-main">
+          <Routes>
+            <Route path='/' element={
+              <Home />
+            }/>
+            <Route path='/text' element={
+              // <Text />
+              <div className='textSide'>
+                <p>Here you paste your text</p>
+                <textarea id='text' className='textArea'></textarea>
+                <div>
+                  <button onClick={chargeDemoText}>use demo text</button>
+                  <Link to='/keywords' onClick={fetchData} className='link'>
+                      Search Keywords
+                  </Link>
+                </div>
+              </div>
+            }/>
+            <Route path='/keywords' element={
+              // <Keywords keywords={keywords}/>
+              <div className='keywords'>
+                <p>Select Keywords for make questions:</p>
+                <div className='keywords-container'>
+                  {
+                    keywords.map(key => 
+                      <div key={key} className='keyword-container'>
+                        <div className='key-name-container'>
+                          <p
+                            className='key-name'>
+                              {key}
+                          </p>
+                        </div>
+                        <div className='key-repetitions-container'>
+                          <button onClick={() => less(key)} className='arrow'>
+                            <IoIosArrowBack />
+                          </button>
+                            <p id={key} className='key-repetitions'>0</p>
+                          <button onClick={() => more(key)} className='arrow'>
+                            <IoIosArrowForward />
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  }
+                </div>
+                <Link to='/questions' onClick={fetchQuestions} className='link'>
+                    Make Questions
+                </Link>
+              </div>
+            }/>
+            <Route path='/questions' element={
+              // <Question />
+              <div>
+                <p>Edit Questions:</p>
+                <div>
+                  {
+                    questions.map(q => {
+                      // get a random and unique key
+                      const byteArray = new Uint8Array(8)
+                      crypto.getRandomValues(byteArray)
+                      const key = Array.from(byteArray)
+                        .map(byte => byte.toString(16).padStart(2, '0'))
+                        .join('')
+
+                      var options = q[1].split(',')
+                      return <div id={key} key={key} className='question'>
+                        <div>
+                          <p>{q[0]}</p>
+                          <p>a. {options[0]}</p>
+                          <p>b. {options[1]}</p>
+                          <p>c. {options[2]}</p>
+                          <p>d. {options[3]}</p>
+                        </div>
+                        <div className='question-icons'>
+                          <button hidden onClick={() => acceptQuestion(key)} className='icon-button'>
+                            <TiTick size="2.5rem" color='white'/>
+                          </button>
+                          <button onClick={() => editQuestion(key)} className='icon-button'>
+                            <FaEdit size="2.5rem" color='white'/>
+                          </button>
+                          <button onClick={() => deleteQuestion(key)} className='icon-button'>
+                            <FaTrash size="2.5rem" color='white'/>
+                          </button>
+                        </div>
+                      </div>
+                    })
+                  }
+                </div>
+                <Link to='/' className='link'>
+                    Finnish Process
+                </Link>
+              </div>
+            }/>
+          </Routes>
+          
+          
+        </main>
+      </BrowserRouter>
     </div>
   )
 }
