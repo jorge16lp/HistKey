@@ -141,10 +141,10 @@ export default function App() {
       <BrowserRouter>
         <main className="App-main">
           <Routes>
-            <Route path='/jorge16lp.github.io/Histkey/' element={
+            <Route path='./' element={
               <Home />
             }/>
-            <Route path='/jorge16lp.github.io/Histkey/text' element={
+            <Route path='./text' element={
               // <Text />
               <div className='textSide'>
                 <p>Here you paste your text</p>
