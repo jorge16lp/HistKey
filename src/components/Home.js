@@ -5,7 +5,7 @@ export default function Home() {
         <p>
             This app is used to generate questions about a history text
         </p>
-        <Link to='https://jorge16lp.github.io/Histkey/text' className='link'>
+        <Link to='/jorge16lp.github.io/Histkey/text' className='link'>
             Let's start with the text
         </Link>
     </div>
