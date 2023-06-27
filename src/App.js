@@ -141,23 +141,23 @@ export default function App() {
       <BrowserRouter>
         <main className="App-main">
           <Routes>
-            <Route path='/' element={
+            <Route path='https://jorge16lp.github.io/Histkey/' element={
               <Home />
             }/>
-            <Route path='/text' element={
+            <Route path='https://jorge16lp.github.io/Histkey/text' element={
               // <Text />
               <div className='textSide'>
                 <p>Here you paste your text</p>
                 <textarea id='text' className='textArea'></textarea>
                 <div>
                   <button onClick={chargeDemoText}>use demo text</button>
-                  <Link to='/keywords' onClick={fetchData} className='link'>
+                  <Link to='https://jorge16lp.github.io/Histkey/keywords' onClick={fetchData} className='link'>
                       Search Keywords
                   </Link>
                 </div>
               </div>
             }/>
-            <Route path='/keywords' element={
+            <Route path='https://jorge16lp.github.io/Histkey/keywords' element={
               // <Keywords keywords={keywords}/>
               <div className='keywords'>
                 <p>Select Keywords for make questions:</p>
@@ -184,12 +184,12 @@ export default function App() {
                     )
                   }
                 </div>
-                <Link to='/questions' onClick={fetchQuestions} className='link'>
+                <Link to='https://jorge16lp.github.io/Histkey/questions' onClick={fetchQuestions} className='link'>
                     Make Questions
                 </Link>
               </div>
             }/>
-            <Route path='/questions' element={
+            <Route path='https://jorge16lp.github.io/Histkey/questions' element={
               // <Question />
               <div>
                 <p>Edit Questions:</p>
@@ -227,7 +227,7 @@ export default function App() {
                     })
                   }
                 </div>
-                <Link to='/' className='link'>
+                <Link to='https://jorge16lp.github.io/Histkey/' className='link'>
                     Finnish Process
                 </Link>
               </div>
