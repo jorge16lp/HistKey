@@ -7,8 +7,8 @@ import { FaEdit, FaTrash } from 'react-icons/fa'
 import { TiTick } from 'react-icons/ti'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 
-// const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
-const endPoint = process.env.REACT_APP_API_URI || 'https://jorge16lp.github.io/Histkey/'
+const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
+// const endPoint = process.env.REACT_APP_API_URI || 'https://jorge16lp.github.io/Histkey/'
 var text = ''
 
 export default function App() {
