@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {
+  useEffect,
+  useState
+} from 'react'
+import logo from './logo.svg'
+import './App.css'
 
-function App() {
+const list1 = ['keroro', 'digimon']
+
+const list2 = ['inazuma eleven', 'doraemon']
+
+export default function App() {
+  const [lists, setList] = useState(list1)
+
+  useEffect(function () {
+    setTimeout(function () {
+      setList(list2)
+    }, 2000)
+  }, [])
+
   return (
     <div className="App">
       <header className="App-header">
+        <header>HistKey</header>
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+           Aquí comienza una nueva era, la de keroro
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {
+          lists.map(name => <p>{name}</p>)
+        }
       </header>
     </div>
-  );
+  )
 }
-
-export default App;
