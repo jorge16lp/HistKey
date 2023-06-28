@@ -17,7 +17,8 @@ cors.CorsOptions = {
 };
 
 app.listen(port, () => {
-    console.log(`API REST corriendo en http://localhost:${port}`)
+    // console.log(`API REST corriendo en http://localhost:${port}`)
+    console.log(`API REST corriendo en https://jorge16lp.github.io`)
 })
 
 app.use(cors())
@@ -30,23 +31,17 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json())
 
-// funciona bien con el res en el main y usando POST
+// obtener las keywords a partir del texto
 app.post('/keywords/', (req, res) => {
     keywords.getKeyWords(res, req.body.theText)
 })
 
-// funciona bien con el res en el main y usando POST
+// obtener las preguntas a partir del texto, las keywords y sus repeticiones
 app.post('/questions/', (req, res) => {
     questions.getQuestions(res, req.body.theText, req.body.keywords, req.body.repetitions)
 })
 
+// obtener el texto de prueba
 app.get('/read-demo-file/', (req, res) => {
     demoTextLoader.getDemoText(res)
 })
-
-// funciona bien con el res en el main
-// app.get('/keywords/', (req, res) => {
-//     res.send({
-//         message: 'Buscando keywords'
-//     });
-// })
