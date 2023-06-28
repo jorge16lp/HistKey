@@ -12,7 +12,8 @@ const port = process.env.PORT || 3001
 
 cors.CorsOptions = {
     // origin: ['http://localhost:3000']
-    origin: 'https://jorge16lp.github.io/Histkey/' || 'http://localhost:3000'
+    // origin: 'https://jorge16lp.github.io' || 'http://localhost:3000'
+    origin: 'https://jorge16lp.github.io'
 };
 
 app.listen(port, () => {
