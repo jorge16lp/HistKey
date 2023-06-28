@@ -13,12 +13,12 @@ const port = process.env.PORT || 3001
 cors.CorsOptions = {
     // origin: ['http://localhost:3000']
     // origin: 'https://jorge16lp.github.io' || 'http://localhost:3000'
-    origin: 'https://jorge16lp.github.io'
+    origin: 'https://jorge16lp.github.io/Histkey'
 };
 
 app.listen(port, () => {
     // console.log(`API REST corriendo en http://localhost:${port}`)
-    console.log(`API REST corriendo en https://jorge16lp.github.io`)
+    console.log(`API REST corriendo en https://jorge16lp.github.io/Histkey`)
 })
 
 app.use(cors())
