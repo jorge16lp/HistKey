@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { BrowserRouter, Link, Routes, Route } from 'react-router-dom'
+import { HashRouter, Link, Routes, Route } from 'react-router-dom'
 import './App.scss'
 import Header from './components/Header'
 import Home from './components/Home'
@@ -138,26 +138,26 @@ export default function App() {
   return (
     <div className="App">
       <Header />
-      <BrowserRouter>
+      <HashRouter>
         <main className="App-main">
           <Routes>
-            <Route path='./' element={
+            <Route path='/' element={
               <Home />
             }/>
-            <Route path='./text' element={
+            <Route path='/text' element={
               // <Text />
               <div className='textSide'>
                 <p>Here you paste your text</p>
                 <textarea id='text' className='textArea'></textarea>
                 <div>
                   <button onClick={chargeDemoText}>use demo text</button>
-                  <Link to='/jorge16lp.github.io/Histkey/keywords' onClick={fetchData} className='link'>
+                  <Link to='/keywords' onClick={fetchData} className='link'>
                       Search Keywords
                   </Link>
                 </div>
               </div>
             }/>
-            <Route path='/jorge16lp.github.io/Histkey/keywords' element={
+            <Route path='/keywords' element={
               // <Keywords keywords={keywords}/>
               <div className='keywords'>
                 <p>Select Keywords for make questions:</p>
@@ -184,12 +184,12 @@ export default function App() {
                     )
                   }
                 </div>
-                <Link to='/jorge16lp.github.io/Histkey/questions' onClick={fetchQuestions} className='link'>
+                <Link to='/questions' onClick={fetchQuestions} className='link'>
                     Make Questions
                 </Link>
               </div>
             }/>
-            <Route path='/jorge16lp.github.io/Histkey/questions' element={
+            <Route path='/questions' element={
               // <Question />
               <div>
                 <p>Edit Questions:</p>
@@ -227,14 +227,14 @@ export default function App() {
                     })
                   }
                 </div>
-                <Link to='/jorge16lp.github.io/Histkey/' className='link'>
+                <Link to='/' className='link'>
                     Finnish Process
                 </Link>
               </div>
             }/>
           </Routes>
         </main>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   )
 }
