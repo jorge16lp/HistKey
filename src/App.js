@@ -7,8 +7,8 @@ import { FaEdit, FaTrash } from 'react-icons/fa'
 import { TiTick } from 'react-icons/ti'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 
-// const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
-const endPoint = process.env.REACT_APP_API_URI || 'https://jorge16lp.github.io/Histkey'
+const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
+// const endPoint = process.env.REACT_APP_API_URI || 'https://jorge16lp.github.io/Histkey_api'
 var text = ''
 
 export default function App() {
@@ -135,6 +135,15 @@ export default function App() {
     }
   };
 
+  const clearAll = async () => {
+    try {
+      setKeywords([])
+      setQuestions([])
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="App">
       <Header />
@@ -227,7 +236,7 @@ export default function App() {
                     })
                   }
                 </div>
-                <Link to='/' className='link'>
+                <Link to='/' onClick={clearAll} className='link'>
                     Finnish Process
                 </Link>
               </div>
