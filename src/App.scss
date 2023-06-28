@@ -54,6 +54,21 @@ body {
     justify-content: center;
     font-size: calc(10px + 2vmin);
 
+
+    .textSide {
+      grid-column: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+
+      .text-links-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+      }
+    }
+
     .link {
       background-color: #3b414d;
       border: solid 2px white;
@@ -61,6 +76,7 @@ body {
       padding: 6px;
       border-radius: 5px;
       text-decoration: none;
+      font-family: 'Courier New', Courier, monospace;
     }
 
     .link:hover {
@@ -69,13 +85,6 @@ body {
     }
   }
 
-  .textSide {
-    grid-column: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-  }
 
   .textArea {
     width: 70rem;
@@ -117,7 +126,7 @@ body {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         font-size: 0.5rem;
-        
+
         .key-repetitions {
           position: relative;
           top: -0.55rem;

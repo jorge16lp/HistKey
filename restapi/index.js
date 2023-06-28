@@ -10,6 +10,11 @@ const demoTextLoader = require('./demoTextLoader.js')
 const app = express()
 const port = process.env.PORT || 3001
 
+cors.CorsOptions = {
+    // origin: ['http://localhost:3000']
+    origin: 'https://jorge16lp.github.io/Histkey/' || 'http://localhost:3000'
+};
+
 app.listen(port, () => {
     console.log(`API REST corriendo en http://localhost:${port}`)
 })
