@@ -7,8 +7,8 @@ import { FaEdit, FaTrash } from 'react-icons/fa'
 import { TiTick } from 'react-icons/ti'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 
-// const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
-const endPoint = process.env.REACT_APP_API_URI || 'https://histkey-restapi.onrender.com'
+const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
+// const endPoint = process.env.REACT_APP_API_URI || 'https://histkey-restapi.onrender.com'
 var text = ''
 
 export default function App() {
@@ -144,6 +144,24 @@ export default function App() {
     }
   };
 
+  const readTxtFile = async () => {
+    try {
+      var file = window.document.getElementById('upload-file').files[0]
+      if (file.type === 'text/plain') {
+        const reader = new FileReader()
+        reader.onload = function(event) {
+          const content = event.target.result
+          window.document.getElementById('text').value = content
+        };
+        reader.readAsText(file);
+      } else {
+        console.log('El archivo no es de tipo txt');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="App">
       <Header />
@@ -156,13 +174,19 @@ export default function App() {
             <Route path='/text' element={
               // <Text />
               <div className='textSide'>
-                <p>Here you paste your text</p>
-                <textarea id='text' className='textArea'></textarea>
-                <div className='text-links-container'>
-                  <button onClick={chargeDemoText} className='link'>Use demo text</button>
-                  <Link to='/keywords' onClick={fetchData} className='link'>
-                      Search Keywords
-                  </Link>
+                <div className='fileSection'>
+                  <p>Here you can upload a text file</p>
+                  <input onChange={readTxtFile} type='file' id='upload-file'></input>
+                </div>
+                <div className='pasteSection'>
+                  <p>or paste your text</p>
+                  <textarea id='text' className='textArea'></textarea>
+                  <div className='text-links-container'>
+                    <button onClick={chargeDemoText} className='link'>Use demo text</button>
+                    <Link to='/keywords' onClick={fetchData} className='link'>
+                        Search Keywords
+                    </Link>
+                  </div>
                 </div>
               </div>
             }/>
