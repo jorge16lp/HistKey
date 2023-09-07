@@ -17,6 +17,7 @@ export default function App() {
 
   const fetchData = async () => {
     try {
+      clearAll()
       text = window.document.getElementById('text').value
       const response = await fetch(endPoint + '/keywords', {
         method: 'POST',
@@ -32,7 +33,7 @@ export default function App() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const fetchQuestions = async () => {
     try {
@@ -56,7 +57,7 @@ export default function App() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const chargeDemoText = async () => {
     try {
@@ -71,7 +72,7 @@ export default function App() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const editQuestion = async (id) => {
     try {
@@ -86,7 +87,7 @@ export default function App() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const acceptQuestion = async (id) => {
     try {
@@ -101,7 +102,7 @@ export default function App() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const deleteQuestion = async (id) => {
     try {
@@ -113,7 +114,7 @@ export default function App() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const less = async (id) => {
     try {
@@ -123,7 +124,7 @@ export default function App() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const more = async (id) => {
     try {
@@ -133,7 +134,7 @@ export default function App() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const clearAll = async () => {
     try {
@@ -142,7 +143,7 @@ export default function App() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const readTxtFile = async () => {
     try {
@@ -160,7 +161,74 @@ export default function App() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
+
+  const generateTxtToDownload = async () => {
+    try {
+      var preguntasFinales = ''
+      for (var q in questions) {
+        console.log(questions[q])
+        var enunciado = questions[q][0]
+        var opciones = questions[q][1].split(',')
+        var preguntaFinal = enunciado + '\nA. ' + opciones[0] + '\nB. ' + opciones[1] +
+          '\nC. ' + opciones[2] + '\nD. ' + opciones[3] + '\nANSWER: '
+      } 
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // const addKeyword = async () => {
+  //   try {
+  //     var key = window.document.getElementById('new-key').value
+  //     // console.log(key)
+  //     // if (key !== ' ' && key !== '') {
+  //     //   var processedText = text
+        
+  //     //   processedText = processedText.replace(/\n/g, ' ');
+  //     //   processedText = processedText.replace(/\t/g, ' ');
+  //     //   processedText = processedText.replace(/,/gi, '.'); // todas las , por  .
+  //     //   processedText = processedText.replace(/[.]/gi, ' '); // todas las . por  .
+  //     //   processedText = processedText.replace(/•/gi, ' '); // todas las · por  .
+  //     //   processedText = processedText.replace(/:/gi, ' '); // todas las : por  .
+  //     //   processedText = processedText.replace(/–/gi, ' '); // todas las – por  .
+  //     //   processedText = processedText.replace(/—/gi, ' '); // todas las — por  .
+  //     //   processedText = processedText.replace(/\*/gi, ' '); // todas las * por  .
+  //     //   processedText = processedText.replace(/;/gi, ' '); // todas las ; por  .
+  //     //   processedText = processedText.replace(/'/gi, ' '); // todas las ' por  .
+  //     //   processedText = processedText.replace(/“/gi, ' '); // todas las “ por  .
+  //     //   processedText = processedText.replace(/”/gi, ' '); // todas las ” por  .
+  //     //   processedText = processedText.replace(/\[/gi, ' '); // todas las [ por  .
+  //     //   processedText = processedText.replace(/\]/gi, ' '); // todas las ] por  .
+  //     //   processedText = processedText.replace(/["'()?]/g, "");
+  //     //   processedText = processedText.replace(/ +/g, ' '); // quitar dobles espacios
+        
+
+  //     //   var textWords = processedText.split(' ')
+  //     //   if (textWords.includes(key) && !keywords.includes(key)) {
+  //     //     var newKeywords = keywords
+  //     //     newKeywords.push(key)
+  //     //     newKeywords.sort()
+  //     //     setKeywords(newKeywords)
+  //     //   }
+  //     // }
+
+  //     // console.log(keywords)
+
+  //     var keywordsContainer = window.document.getElementById('keywords-container')
+  //     var newDiv = window.document.createElement("<div key="+key+" className='keyword-container'>"+
+  //       "<div className='key-name-container'>"+
+  //         "<p className='key-name'>"+key+"</p></div>"+
+  //       "<div className='key-repetitions-container'>"+
+  //           "<p id="+key+" className='key-repetitions'>0</p>"+
+  //       "</div></div>")
+  //     console.log(newDiv)
+  //     // newDiv[0][0][0].style.fontSize = '0.5rem'
+  //     keywordsContainer.innerHTML += newDiv
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   return (
     <div className="App">
@@ -179,7 +247,7 @@ export default function App() {
                   <input onChange={readTxtFile} type='file' id='upload-file'></input>
                 </div>
                 <div className='pasteSection'>
-                  <p>or paste your text</p>
+                  <p>or directly paste your text</p>
                   <textarea id='text' className='textArea'></textarea>
                   <div className='text-links-container'>
                     <button onClick={chargeDemoText} className='link'>Use demo text</button>
@@ -191,10 +259,9 @@ export default function App() {
               </div>
             }/>
             <Route path='/keywords' element={
-              // <Keywords keywords={keywords}/>
               <div className='keywords'>
                 <p>Select Keywords for make questions:</p>
-                <div className='keywords-container'>
+                <div id='keywords-container' className='keywords-container'>
                   {
                     keywords.map(key => 
                       <div key={key} className='keyword-container'>
@@ -217,13 +284,18 @@ export default function App() {
                     )
                   }
                 </div>
-                <Link to='/questions' onClick={fetchQuestions} className='link'>
-                    Make Questions
-                </Link>
+                {/* <div className='add-continue'>
+                  <div>
+                    <input type='text' id='new-key'></input>
+                    <button onClick={addKeyword}>+</button>
+                  </div> */}
+                  <Link to='/questions' onClick={fetchQuestions} className='link'>
+                      Make Questions
+                  </Link>
+                {/* </div> */}
               </div>
             }/>
             <Route path='/questions' element={
-              // <Question />
               <div>
                 <p>Edit Questions:</p>
                 <div>
@@ -260,9 +332,12 @@ export default function App() {
                     })
                   }
                 </div>
-                <Link to='/' onClick={clearAll} className='link'>
-                    Finnish Process
-                </Link>
+                <div className='saveORcontinue'>
+                  <button onClick={generateTxtToDownload} className='link'>Save as...</button>
+                  <Link to='/' onClick={clearAll} className='link'>
+                      Finnish Process
+                  </Link>
+                </div>
               </div>
             }/>
           </Routes>

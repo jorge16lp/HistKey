@@ -68,6 +68,12 @@ body {
         align-items: center;
       }
 
+      .textArea {
+        width: 70rem;
+        height: 22rem;
+        margin-bottom: 15px;
+      }
+
       .text-links-container {
         width: 100%;
         display: flex;
@@ -89,13 +95,6 @@ body {
       background-color: white;
       color: #3b414d;
     }
-  }
-
-
-  .textArea {
-    width: 70rem;
-    height: 22rem;
-    margin-bottom: 15px;
   }
 
   .keywords-container {
@@ -147,8 +146,17 @@ body {
           height: 2rem;
         }
       }
-
     }
+  }
+
+  // .add-continue {
+  //   display: flex;
+  //   justify-content: space-evenly;
+  // }
+
+  .saveORcontinue {
+    display: flex;
+    justify-content: space-evenly;
   }
 
   .question {
