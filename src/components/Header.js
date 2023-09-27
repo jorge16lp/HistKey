@@ -6,8 +6,8 @@ export default function Header() {
             <img src={logo} className="App-logo" alt="logo" />
             <h1>HistKey</h1>                    
         </div>
-        {/* <div className='header-right'>
-            here other headers like login, language, help...
-        </div> */}
-    </header>
+        <div className='header-right'>
+            
+        </div>
+    </header> 
 }
