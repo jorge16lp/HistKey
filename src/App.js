@@ -14,6 +14,7 @@ var text = ''
 export default function App() {
   const [keywords, setKeywords] = useState([])
   const [questions, setQuestions] = useState([])
+  const [answers, setAnswers] = useState([])
 
   const fetchData = async () => {
     try {
@@ -170,24 +171,94 @@ export default function App() {
         alert('El archivo no es de tipo txt')
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   }
 
   const generateTxtToDownload = async () => {
     try {
-      var preguntasFinales = ''
+      var lastLink = document.getElementById("link-to-download")
+      if (lastLink)
+        lastLink.remove()
+      var contenidoTexto = ``
+
       for (var q in questions) {
-        console.log(questions[q])
-        var enunciado = questions[q][0]
+        // console.log(questions[q])
         var opciones = questions[q][1].split(',')
-        var preguntaFinal = enunciado + '\nA. ' + opciones[0] + '\nB. ' + opciones[1] +
-          '\nC. ' + opciones[2] + '\nD. ' + opciones[3] + '\nANSWER: '
-      } 
-      preguntasFinales += preguntaFinal
-      return preguntasFinales
+        var respuesta = questions[q][2]
+        var answer = ""
+        if (respuesta === opciones[0])
+          answer = "A"
+        else if (respuesta === opciones[1])
+          answer = "B"
+        else if (respuesta === opciones[2])
+          answer = "C"
+        else if (respuesta === opciones[3])
+          answer = "D"
+        contenidoTexto += `${questions[q][0]}
+A. ${opciones[0]}
+B. ${opciones[1]}
+C. ${opciones[2]}
+D. ${opciones[3]}
+ANSWER: ${answer}\n`
+      }
+
+      var blob = new Blob([contenidoTexto], { type: "text/plain" })
+      var urlArchivo = URL.createObjectURL(blob)
+
+      var enlaceDescarga = document.createElement("a")
+      enlaceDescarga.href = urlArchivo;
+      enlaceDescarga.download = "exam.txt"
+      enlaceDescarga.textContent = "Click to download"
+      enlaceDescarga.id = "link-to-download"
+
+      document.getElementById('download-questions-container').appendChild(enlaceDescarga)
     } catch (error) {
-      console.log(error);
+      console.log(error)
+    }
+  }
+
+  const saveExamInDB = async () => {
+    try {
+      var contenidoTexto = ``
+      for (var q in questions) {
+        // console.log(questions[q])
+        var opciones = questions[q][1].split(',')
+        var respuesta = questions[q][2]
+        var answer = ""
+        if (respuesta === opciones[0])
+          answer = "A"
+        else if (respuesta === opciones[1])
+          answer = "B"
+        else if (respuesta === opciones[2])
+          answer = "C"
+        else if (respuesta === opciones[3])
+          answer = "D"
+        contenidoTexto += `${questions[q][0]}:${opciones[0]},${opciones[1]},${opciones[2]},${opciones[3]},${answer}
+----------\n`
+      }
+      // console.log(contenidoTexto)
+      var id = prompt("Please, introduce the public id for the exam", "exam100")
+      const response = await fetch(endPoint + '/add-exam', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json'
+         },
+        body: JSON.stringify({
+          public_id: id,
+          questions: contenidoTexto
+        }) 
+      });
+      const data = await response.json()
+      // console.log(data)
+      if (data.exam === '11000')
+        alert('The public id inserted is already in use')
+      else if (data.exam === null)
+        alert('There is a problem with the exam saving')
+      else
+        document.getElementById('save-exam-button').style.display = "none"
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -348,11 +419,11 @@ export default function App() {
           }) 
         });
         const data = await response.json()
-        console.log(data)
+        // console.log(data)
         if (data.user === '11000')
           alert('The email inserted is already signed up')
         else if (data.user === null)
-          alert('There is a problem with de user sign up')
+          alert('There is a problem with the user sign up')
         else if (teacherChecked)
           window.document.getElementById('sign-to-text').style.display = 'block'
         else
@@ -378,6 +449,138 @@ export default function App() {
         elemento.style.backgroundColor = 'greenyellow'
       })
       
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const deselectAllKeywords = async () => {
+    try {
+      var key_repetitions = window.document.getElementsByClassName('key-repetitions')
+      key_repetitions = Array.from(key_repetitions)
+      key_repetitions.forEach(function (elemento) {
+        if (elemento.textContent !== '0')
+          elemento.textContent = '0'
+      })
+
+      var key_containers = window.document.getElementsByClassName('key-name-container')
+      key_containers = Array.from(key_containers)
+      key_containers.forEach(function (elemento) {
+        elemento.style.backgroundColor = 'white'
+      })
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const findExamByPublicId = async () => {
+    try {
+      var p_id = window.document.getElementById('exam-id-txt').value
+      // console.log(p_id)
+
+      const response = await fetch(endPoint + '/find-exam-by-publicId', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          public_id: p_id
+        }) 
+      });
+      const data = await response.json()
+      // console.log(data)
+
+      var bigQuestions = data.exam.questions.split('\n----------\n')
+      var answersArray = []
+      // console.log(bigQuestions)
+      for (var i=0; i < bigQuestions.length; i++) {
+        if (bigQuestions[i] !== "") {
+          var questionParts = bigQuestions[i].split(':')
+          // console.log(questionParts)
+          var question = questionParts[0]
+          var options = questionParts[1].split(',')
+          var answer = ""
+          if (options[4] === "A") answer = options[0]
+          else if (options[4] === "B") answer = options[1]
+          else if (options[4] === "C") answer = options[2]
+          else answer = options[3]
+          answersArray.push(answer)
+          options.pop()
+          // console.log(question)
+          // console.log(options)
+          // console.log(answer)
+
+          var questionsContainer = window.document.getElementById('exam-questions-container')
+          var questionContainer = window.document.createElement('div')
+          questionContainer.className = 'exam-question'
+          questionContainer.style.display = 'flex'
+          questionContainer.style.flexDirection = 'column'
+          questionContainer.style.border = '2px solid white'
+          questionContainer.style.borderRadius = '0.5rem'
+          questionContainer.style.padding = '1rem'
+          questionContainer.style.margin = '1rem'
+          // colocar el enunciado de la pregunta
+          var questionText = window.document.createElement('p')
+          questionText.textContent = question
+          questionContainer.appendChild(questionText)
+          // colocar las opciones
+          for (var o=0; o < options.length; o++) {
+            var optionContainer = window.document.createElement('div')
+            var radioInput = window.document.createElement('input')
+            radioInput.style.margin = '1rem'
+            radioInput.type = 'radio'
+            radioInput.name = `option_Q${i}`
+
+            var label = window.document.createElement('label')
+            label.textContent = options[o]
+
+            optionContainer.appendChild(radioInput)
+            optionContainer.appendChild(label)
+            questionContainer.appendChild(optionContainer)
+          }
+
+          questionsContainer.appendChild(questionContainer)          
+        }
+      }
+      // console.log("array",answersArray)
+      setAnswers(answersArray)
+      // console.log("state: ",answers)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const checkExamAnswers = async () => {
+    try {
+      var examQuestions = window.document.getElementsByClassName('exam-question')
+      for (var i=0; i < examQuestions.length; i++) {
+        var radioButtons = examQuestions[i].querySelectorAll('input[type="radio"]')
+        var selectedOption = null
+        for (var rb=0; rb < radioButtons.length; rb++) {
+          if (radioButtons[rb].checked) {
+            var label = radioButtons[rb].nextElementSibling        
+            selectedOption = label.textContent
+          }
+        }
+        // console.log(selectedOption)
+        if (selectedOption === answers[i]) {
+          var correctAnswer = window.document.createElement('p')
+          correctAnswer.textContent = 'CORRECT'
+          correctAnswer.style.backgroundColor = '#28d857'
+          correctAnswer.style.color = 'black'
+          correctAnswer.style.borderRadius = '1rem'
+          examQuestions[i].appendChild(correctAnswer)
+        } else {
+          var incorrectAnswer = window.document.createElement('p')
+          incorrectAnswer.textContent = 'WRONG, the correct answer was: ' + answers[i]
+          incorrectAnswer.style.backgroundColor = '#ff644c'
+          incorrectAnswer.style.color = 'black'
+          incorrectAnswer.style.borderRadius = '1rem'
+          examQuestions[i].appendChild(incorrectAnswer)
+        }
+      }
+      window.document.getElementById('check-answers-button').remove()
     } catch (error) {
       console.log(error);
     }
@@ -463,16 +666,32 @@ export default function App() {
             </div>
             }/>
             <Route path='/exams' element={
-              <div className='examsSide'>
-                <Link to='/' className='logout-link'>
+              <div className='examsIdSide'>
+                <Link to='/' onClick={clearAll} className='logout-link'>
                   Log out
                 </Link>
-                manera de buscar exámenes por id pública
+                <div className='exams-id-container'>
+                  <p>use a public exam id tu find it</p>
+                  <input id='exam-id-txt' placeholder='exam id' type='text' className='exam-id-txt'></input>
+                  <Link to='/exam' onClick={findExamByPublicId} className='link'>
+                    Search exam
+                  </Link>
+                </div>
+              </div>
+            }/>
+            <Route path='/exam' element={
+              <div className='examSide'>
+                <Link to='/' onClick={clearAll} className='logout-link'>
+                  Log out
+                </Link>
+                <div id='exam-questions-container' className='exam-questions-container'>
+                </div>
+                <button id='check-answers-button' onClick={checkExamAnswers} className='link'>Check answers</button>
               </div>
             }/>
             <Route path='/text' element={
               <div className='textSide'>
-                <Link to='/' className='logout-link'>
+                <Link to='/' onClick={clearAll} className='logout-link'>
                   Log out
                 </Link>
                 <div className='fileSection'>
@@ -494,8 +713,11 @@ export default function App() {
             <Route path='/keywords' element={
               <div className='keywords'>
                 <div className='keywords-header'>
-                  <button onClick={selectAllKeywords} className='selectAll-button'>Select All</button>
-                  <Link to='/' className='logout-link'>
+                  <div className='selection-keywords-container'>
+                    <button onClick={selectAllKeywords} className='selection-keywords-button'>Select All</button>
+                    <button onClick={deselectAllKeywords} className='selection-keywords-button'>Deselect All</button>
+                  </div>
+                  <Link to='/' onClick={clearAll} className='logout-link'>
                     Log out
                   </Link>
                 </div>
@@ -541,7 +763,7 @@ export default function App() {
             }/>
             <Route path='/questions' element={
               <div className='questions'>
-                <Link to='/' className='logout-link'>
+                <Link to='/' onClick={clearAll} className='logout-link'>
                   Log out
                 </Link>
                 <p>Edit Questions:</p>
@@ -580,7 +802,10 @@ export default function App() {
                   }
                 </div>
                 <div className='saveORcontinue'>
-                  <button onClick={generateTxtToDownload} className='link'>Save as...</button>
+                  <div id='download-questions-container' className='download-questions-container'>
+                    <button id='save-exam-button' onClick={saveExamInDB} className='link'>Save exam</button>
+                    <button onClick={generateTxtToDownload} className='link'>Make link to download</button>
+                  </div>
                   <Link to='/' onClick={clearAll} className='link'>
                       Finnish Process
                   </Link>

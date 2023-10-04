@@ -13,8 +13,6 @@ body {
   background-color: #3b414d;
   color: white;
   font-family: 'Courier New', Courier, monospace;
-  /*font-family:Georgia, 'Times New Roman', Times, serif;*/
-  /*font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;*/
 
   .App-header {
     background-color: #3b414d;
@@ -149,7 +147,18 @@ body {
       color: #3b414d;
     }
 
-    .examsSide {
+    .examsIdSide {
+      display: flex;
+      flex-direction: column;
+
+      .exam-id-txt {
+        height: 1.6rem;
+        margin-right: 0.5rem;
+        margin-top: 0.5rem;
+      }
+    }
+
+    .examSide {
       display: flex;
       flex-direction: column;
     }
@@ -189,22 +198,28 @@ body {
         display: flex;
         justify-content: space-between;
 
-        .selectAll-button {
-          background-color: #3b414d;
-          border: solid 2px white;
-          color: white;
-          padding: 6px;
-          border-radius: 5px;
-          text-decoration: none;
-          font-family: 'Courier New', Courier, monospace;
-          font-size: 1.3rem;
-          align-self: center;
+        .selection-keywords-container {
+          display: flex;
+          gap: 15px;
+
+          .selection-keywords-button {
+            background-color: #3b414d;
+            border: solid 2px white;
+            color: white;
+            padding: 6px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.3rem;
+            align-self: center;
+          }
+    
+          .selection-keywords-button:hover {
+            background-color: white;
+            color: #3b414d;
+          }
         }
-  
-        .selectAll-button:hover {
-          background-color: white;
-          color: #3b414d;
-        }
+
       }
 
       .keywords-container {
@@ -298,8 +313,59 @@ body {
     .questions {
       display: flex;
       flex-direction: column;
-    }
+    
+      .question {
+        border: 2px solid white;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin: 1rem;
+        display: grid;
+        grid-template: 1fr / 80% 20%;
+    
+        .question-icons {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          align-items: center;
+    
+          .icon-button {
+            border: none;
+            background-color: #3b414d;
+            padding: 5px;
+          }
+    
+          .icon-button:hover {
+            border: 2px solid white;
+            border-radius: 5px;
+          }
+        }
+      }
 
+      .saveORcontinue {
+        display: flex;
+        justify-content: space-evenly;
+        
+        .download-questions-container {
+          display: flex;
+          justify-content: space-evenly;
+          gap: 15px;
+
+          a {
+            background-color: #3b414d;
+            color: white;
+            // border: solid 2px white;
+            text-decoration: none;
+            padding: 5px;
+          }
+      
+          a:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+    
+    
     .link {
       background-color: #3b414d;
       border: solid 2px white;
@@ -314,38 +380,6 @@ body {
     .link:hover {
       background-color: white;
       color: #3b414d;
-    }
-  }
-
-  .saveORcontinue {
-    display: flex;
-    justify-content: space-evenly;
-  }
-
-  .question {
-    border: 2px solid white;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    margin: 1rem;
-    display: grid;
-    grid-template: 1fr / 80% 20%;
-
-    .question-icons {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
-      align-items: center;
-
-      .icon-button {
-        border: none;
-        background-color: #3b414d;
-        padding: 5px;
-      }
-
-      .icon-button:hover {
-        border: 2px solid white;
-        border-radius: 5px;
-      }
     }
   }
 }
