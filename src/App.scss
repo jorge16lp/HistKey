@@ -43,7 +43,7 @@ body {
 
     .header-right {
       background-color: #3b414d;
-      margin-left: 5rem; 
+      margin-left: 5rem;
     }
   }
 
@@ -83,7 +83,7 @@ body {
         background-color: white;
         color: #3b414d;
       }
-  
+
       .log-link {
         display: none;
         background-color: #3b414d;
@@ -97,7 +97,7 @@ body {
         max-width: 200px;
         align-self: center;
       }
-  
+
       .log-link:hover {
         background-color: white;
         color: #3b414d;
@@ -161,6 +161,23 @@ body {
     .examSide {
       display: flex;
       flex-direction: column;
+
+      .fin-exam-link {
+        background-color: #3b414d;
+        border: solid 2px white;
+        color: white;
+        padding: 6px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-family: 'Courier New', Courier, monospace;
+        align-self: center;
+        display: none;
+      }
+
+      .fin-exam-link:hover {
+      background-color: white;
+      color: #3b414d;
+    }
     }
 
     .textSide {
@@ -213,7 +230,7 @@ body {
             font-size: 1.3rem;
             align-self: center;
           }
-    
+
           .selection-keywords-button:hover {
             background-color: white;
             color: #3b414d;
@@ -226,7 +243,7 @@ body {
         margin: -20px 0 20px;
         display: grid;
         grid-template-columns: repeat(8, 1fr);
-  
+
         .keyword-container {
           display: grid;
           grid-template: 1fr 1fr / 100%;
@@ -234,14 +251,14 @@ body {
           border: solid 2px white;
           border-radius: 0.5rem;
           margin: 5px;
-  
+
           .key-name-container {
             grid-column: span 3;
             background-color: white;
             border-top-left-radius: 0.3rem;
             border-top-right-radius: 0.3rem;
             margin: 2px;
-  
+
             .key-name {
               font-size: 0.8rem;
               text-align: center;
@@ -250,19 +267,19 @@ body {
               border: none;
             }
           }
-  
+
           .key-repetitions-container {
             width: 100%;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             font-size: 0.5rem;
-  
+
             .key-repetitions {
               position: relative;
               top: -0.55rem;
               font-size: 1rem;
             }
-  
+
             .arrow {
               background-color: #3b414d;
               color: white;
@@ -273,21 +290,21 @@ body {
           }
         }
       }
-  
+
       .footer {
         display: flex;
         justify-content: space-evenly;
-    
+
         .add-container {
           display: flex;
-          
+
           align-self: center;
-    
+
           .input-add-keyword {
             margin: 1rem;
             margin-right: 5px;
           }
-    
+
           .button-add-keyword {
             background-color: #3b414d;
             border: solid 2px white;
@@ -301,7 +318,7 @@ body {
             padding: 6px;
             min-width: 2.5rem;
           }
-      
+
           .button-add-keyword:hover {
             background-color: white;
             color: #3b414d;
@@ -313,7 +330,7 @@ body {
     .questions {
       display: flex;
       flex-direction: column;
-    
+
       .question {
         border: 2px solid white;
         border-radius: 0.5rem;
@@ -321,19 +338,19 @@ body {
         margin: 1rem;
         display: grid;
         grid-template: 1fr / 80% 20%;
-    
+
         .question-icons {
           display: flex;
           flex-direction: column;
           justify-content: space-evenly;
           align-items: center;
-    
+
           .icon-button {
             border: none;
             background-color: #3b414d;
             padding: 5px;
           }
-    
+
           .icon-button:hover {
             border: 2px solid white;
             border-radius: 5px;
@@ -344,7 +361,7 @@ body {
       .saveORcontinue {
         display: flex;
         justify-content: space-evenly;
-        
+
         .download-questions-container {
           display: flex;
           justify-content: space-evenly;
@@ -357,15 +374,14 @@ body {
             text-decoration: none;
             padding: 5px;
           }
-      
+
           a:hover {
             text-decoration: underline;
           }
         }
       }
     }
-    
-    
+
     .link {
       background-color: #3b414d;
       border: solid 2px white;

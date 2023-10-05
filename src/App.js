@@ -7,8 +7,8 @@ import { FaEdit, FaTrash } from 'react-icons/fa'
 import { TiTick } from 'react-icons/ti'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 
-const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
-// const endPoint = process.env.REACT_APP_API_URI || 'https://histkey-restapi.onrender.com'
+// const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
+const endPoint = process.env.REACT_APP_API_URI || 'https://histkey-restapi.onrender.com'
 var text = ''
 
 export default function App() {
@@ -221,9 +221,14 @@ ANSWER: ${answer}\n`
   const saveExamInDB = async () => {
     try {
       var contenidoTexto = ``
+      var webQuestions = window.document.getElementsByClassName('question')
+      console.log(webQuestions)
       for (var q in questions) {
         // console.log(questions[q])
-        var opciones = questions[q][1].split(',')
+        var opciones = []
+        for (var i=1; i < webQuestions[q].children[0].children.length; i++) 
+          opciones.push(webQuestions[q].children[0].children[i].textContent.substring(3))
+        // console.log(opciones)
         var respuesta = questions[q][2]
         var answer = ""
         if (respuesta === opciones[0])
@@ -234,11 +239,14 @@ ANSWER: ${answer}\n`
           answer = "C"
         else if (respuesta === opciones[3])
           answer = "D"
-        contenidoTexto += `${questions[q][0]}:${opciones[0]},${opciones[1]},${opciones[2]},${opciones[3]},${answer}
+        var question = webQuestions[q].children[0].children[0].textContent
+        // console.log(question)
+        contenidoTexto += `${question}:${opciones[0]},${opciones[1]},${opciones[2]},${opciones[3]},${answer}
 ----------\n`
       }
       // console.log(contenidoTexto)
       var id = prompt("Please, introduce the public id for the exam", "exam100")
+      // console.log(id)
       const response = await fetch(endPoint + '/add-exam', {
         method: 'POST',
         headers: { 
@@ -255,7 +263,7 @@ ANSWER: ${answer}\n`
         alert('The public id inserted is already in use')
       else if (data.exam === null)
         alert('There is a problem with the exam saving')
-      else
+      else if (id !== null)
         document.getElementById('save-exam-button').style.display = "none"
     } catch (error) {
       console.log(error)
@@ -349,7 +357,7 @@ ANSWER: ${answer}\n`
             }) 
           });
           const data = await response.json()
-          console.log(data)
+          // console.log(data)
           if (data.user === null)
             alert('Data introduced is incorrect')
           else
@@ -366,7 +374,7 @@ ANSWER: ${answer}\n`
             }) 
           });
           const data = await response.json()
-          console.log(data)
+          // console.log(data)
           if (data.user === null)
             alert('Data introduced is incorrect')
           else
@@ -580,9 +588,21 @@ ANSWER: ${answer}\n`
           examQuestions[i].appendChild(incorrectAnswer)
         }
       }
-      window.document.getElementById('check-answers-button').remove()
+      window.document.getElementById('check-answers-button').style.display = 'none'
+      window.document.getElementById('fin-exam-link').style.display = 'block'
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  const clearDoneExam = async () => {
+    try {
+      var exam_questions = window.document.getElementById('exam-questions-container')
+      for (var i=0; i < answers.length; i++)
+        if (exam_questions && exam_questions.firstElementChild)
+          exam_questions.removeChild(exam_questions.firstChild)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -687,6 +707,9 @@ ANSWER: ${answer}\n`
                 <div id='exam-questions-container' className='exam-questions-container'>
                 </div>
                 <button id='check-answers-button' onClick={checkExamAnswers} className='link'>Check answers</button>
+                <Link to='/exams' onClick={clearDoneExam} id='fin-exam-link' className='fin-exam-link'>
+                  Finnish exam
+                </Link>
               </div>
             }/>
             <Route path='/text' element={
@@ -806,7 +829,7 @@ ANSWER: ${answer}\n`
                     <button id='save-exam-button' onClick={saveExamInDB} className='link'>Save exam</button>
                     <button onClick={generateTxtToDownload} className='link'>Make link to download</button>
                   </div>
-                  <Link to='/' onClick={clearAll} className='link'>
+                  <Link to='/text' onClick={clearAll} className='link'>
                       Finnish Process
                   </Link>
                 </div>
