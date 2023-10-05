@@ -180,11 +180,15 @@ export default function App() {
       var lastLink = document.getElementById("link-to-download")
       if (lastLink)
         lastLink.remove()
-      var contenidoTexto = ``
 
+      var contenidoTexto = ``
+      var webQuestions = window.document.getElementsByClassName('question')
       for (var q in questions) {
         // console.log(questions[q])
-        var opciones = questions[q][1].split(',')
+        // var opciones = questions[q][1].split(',')
+        var opciones = []
+        for (var i=1; i < webQuestions[q].children[0].children.length; i++) 
+          opciones.push(webQuestions[q].children[0].children[i].textContent.substring(3))
         var respuesta = questions[q][2]
         var answer = ""
         if (respuesta === opciones[0])
@@ -195,7 +199,8 @@ export default function App() {
           answer = "C"
         else if (respuesta === opciones[3])
           answer = "D"
-        contenidoTexto += `${questions[q][0]}
+        var question = webQuestions[q].children[0].children[0].textContent
+        contenidoTexto += `${question}
 A. ${opciones[0]}
 B. ${opciones[1]}
 C. ${opciones[2]}
@@ -222,7 +227,7 @@ ANSWER: ${answer}\n`
     try {
       var contenidoTexto = ``
       var webQuestions = window.document.getElementsByClassName('question')
-      console.log(webQuestions)
+      // console.log(webQuestions)
       for (var q in questions) {
         // console.log(questions[q])
         var opciones = []
@@ -245,7 +250,7 @@ ANSWER: ${answer}\n`
 ----------\n`
       }
       // console.log(contenidoTexto)
-      var id = prompt("Please, introduce the public id for the exam", "exam100")
+      var id = prompt("Please, introduce the public id for the exam.\nAfter saving it, it cannot be overwritten. Make sure you don't want to make any more changes.", "exam100")
       // console.log(id)
       const response = await fetch(endPoint + '/add-exam', {
         method: 'POST',
