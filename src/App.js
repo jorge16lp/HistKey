@@ -183,7 +183,8 @@ export default function App() {
 
       var contenidoTexto = ``
       var webQuestions = window.document.getElementsByClassName('question')
-      for (var q in questions) {
+      console.log(webQuestions.length)
+      for (var q = 0; q < webQuestions.length; q++) {
         // console.log(questions[q])
         // var opciones = questions[q][1].split(',')
         var opciones = []
@@ -228,7 +229,8 @@ ANSWER: ${answer}\n`
       var contenidoTexto = ``
       var webQuestions = window.document.getElementsByClassName('question')
       // console.log(webQuestions)
-      for (var q in questions) {
+      console.log(webQuestions.length)
+      for (var q = 0; q < webQuestions.length; q++) {
         // console.log(questions[q])
         var opciones = []
         for (var i=1; i < webQuestions[q].children[0].children.length; i++) 
@@ -510,6 +512,11 @@ ANSWER: ${answer}\n`
       for (var i=0; i < bigQuestions.length; i++) {
         if (bigQuestions[i] !== "") {
           var questionParts = bigQuestions[i].split(':')
+          if (questionParts.length > 2) {
+            for (var k = 1; k <= questionParts.length - 2; k++)
+              questionParts[0] += ": " + questionParts[k]
+            questionParts[1] = questionParts[questionParts.length-1]
+          }
           // console.log(questionParts)
           var question = questionParts[0]
           var options = questionParts[1].split(',')
