@@ -6,12 +6,15 @@ import Home from './components/Home'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { TiTick } from 'react-icons/ti'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
+import {notification } from 'antd';
 
-// const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
-const endPoint = process.env.REACT_APP_API_URI || 'https://histkey-restapi.onrender.com'
+const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
+// const endPoint = process.env.REACT_APP_API_URI || 'https://histkey-restapi.onrender.com'
 var text = ''
 
 export default function App() {
+  const [api, contextHolder] = notification.useNotification()
+
   const [keywords, setKeywords] = useState([])
   const [questions, setQuestions] = useState([])
   const [answers, setAnswers] = useState([])
@@ -55,11 +58,6 @@ export default function App() {
       });
       const data = await response.json();
       setQuestions(data.questions)
-
-      // eliminar posibles keywords añadidas a mano
-      var questions = window.document.getElementById('questions-container');
-      if (questions && questions.firstElementChild)
-        questions.removeChild(questions.firstChild)
     } catch (error) {
       console.log(error);
     }
@@ -168,7 +166,7 @@ export default function App() {
         }
         reader.readAsText(file);
       } else {
-        alert('El archivo no es de tipo txt')
+        openNotification("top", "Is not a txt file", "error")
       }
     } catch (error) {
       console.log(error)
@@ -267,9 +265,9 @@ ANSWER: ${answer}\n`
       const data = await response.json()
       // console.log(data)
       if (data.exam === '11000')
-        alert('The public id inserted is already in use')
+        openNotification("top", "The public id is already in use", "error")
       else if (data.exam === null)
-        alert('There is a problem with the exam saving')
+        openNotification("top", "There is a problem with the exam saving", "error")
       else if (id !== null)
         document.getElementById('save-exam-button').style.display = "none"
     } catch (error) {
@@ -281,63 +279,9 @@ ANSWER: ${answer}\n`
     try {
       var key = window.document.getElementById('new-key').value
       if (key === '')
-        alert('New word is empty')
-      else {
-        var keywordsContainer = window.document.getElementById('keywords-container');
-      
-        // Crear un nuevo elemento div
-        var newDiv = document.createElement('div');
-        newDiv.class = 'keyword-container';
-        newDiv.innerHTML = `
-          <div key=${key} class='keyword-container'>
-            <div id=${key} class='key-name-container'>
-              <p class='key-name'>
-                ${key}
-              </p>
-            </div>
-            <div class='key-repetitions-container'>
-              <button id='${key}_less' class="arrow">
-                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M217.9 256L345 129c9.4-9.4 9.4-24.6 0-33.9-9.4-9.4-24.6-9.3-34 0L167 239c-9.1 9.1-9.3 23.7-.7 33.1L310.9 417c4.7 4.7 10.9 7 17 7s12.3-2.3 17-7c9.4-9.4 9.4-24.6 0-33.9L217.9 256z">
-                  </path>
-                </svg>
-              </button>
-              <p id='${key}_repetitions' class='key-repetitions'>
-                1
-              </p>
-              <button id='${key}_more' class="arrow">
-              <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                <path d="M294.1 256L167 129c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.3 34 0L345 239c9.1 9.1 9.3 23.7.7 33.1L201.1 417c-4.7 4.7-10.9 7-17 7s-12.3-2.3-17-7c-9.4-9.4-9.4-24.6 0-33.9l127-127.1z">
-                </path>
-              </svg>
-              </button>
-            </div>
-          </div>`;
-        
-        // meter el elemento div en su lugar
-        keywordsContainer.appendChild(newDiv);
-        // vaciar el campo de texto
-        window.document.getElementById('new-key').value = '';
-          
-        // añadir funcion al boton de disminuir
-        var less_button = window.document.getElementById(key+'_less')      
-        less_button.onclick = function() {
-          less(key+'_repetitions')
-        }
-        // añadir funcion al boton de aumentar
-        var more_button = window.document.getElementById(key+'_more')
-        more_button.onclick = function() {
-          more(key+'_repetitions')
-        }
-
-        // darle color de seleccionada a la nueva key
-        window.document.getElementById(key).style.backgroundColor = 'greenyellow'
-
-        var newKeywords = []
-        newKeywords = keywords
-        newKeywords.push(key)
-        setKeywords(newKeywords)
-      }
+        openNotification("top", "New word is empty", "error")
+      else 
+        setKeywords((prevKeywords) => [...prevKeywords, key])
     } catch (error) {
       console.log(error);
     }
@@ -348,7 +292,7 @@ ANSWER: ${answer}\n`
       // validación de campos
       if (!window.document.getElementById('login-teacher').checked
           && !window.document.getElementById('login-student').checked)
-          alert('No user type selected')
+          openNotification("top", "No user type selected", "error")
       else {
         var formEmail = window.document.getElementById('login-email').value
         var password = window.document.getElementById('login-pass').value
@@ -366,7 +310,7 @@ ANSWER: ${answer}\n`
           const data = await response.json()
           // console.log(data)
           if (data.user === null)
-            alert('Data introduced is incorrect')
+            openNotification("top", "Data introduced is incorrect", "error")
           else
             window.document.getElementById('log-to-text').style.display = 'block'      
         } else {
@@ -383,7 +327,7 @@ ANSWER: ${answer}\n`
           const data = await response.json()
           // console.log(data)
           if (data.user === null)
-            alert('Data introduced is incorrect')
+            openNotification("top", "Data introduced is incorrect", "error")
           else
             window.document.getElementById('log-to-exams').style.display = 'block'  
         }
@@ -404,19 +348,19 @@ ANSWER: ${answer}\n`
       var password = window.document.getElementById('signup-pass').value
       var passwordRep = window.document.getElementById('signup-pass-repeat').value
       if (!teacherChecked && !studentChecked)
-        alert('No user type selected')
+        openNotification("top", "No user type selected", "error")
       else if (formName === '')
-        alert('No name inserted')
+        openNotification("top", "No name inserted", "error")
       else if (formSurname === '')
-        alert('No surname inserted')
+        openNotification("top", "No surname inserted", "error")
       else if (formEmail === '')
-        alert('No email inserted')
+        openNotification("top", "No email inserted", "error")
       else if (password === '')
-        alert('No password inserted')
+        openNotification("top", "No password inserted", "error")
       else if (passwordRep === '')
-        alert('No password repeated inserted')
+        openNotification("top", "no password repeated inserted", "error")
       else if (password !== passwordRep)
-        alert('Password and password repeated must be the same')
+        openNotification("top", "Password and password repeated must be the same", "error")
       else { // insertar nuevo usuario en la bd
         // obtener el tipo de usuario a insertar
         var user = window.document.getElementById('signup-teacher').checked ? 'teacher' : 'student'
@@ -436,9 +380,9 @@ ANSWER: ${answer}\n`
         const data = await response.json()
         // console.log(data)
         if (data.user === '11000')
-          alert('The email inserted is already signed up')
+          openNotification("top", "The email is already signed up", "error")
         else if (data.user === null)
-          alert('There is a problem with the user sign up')
+          openNotification("top", "There is a problem with de user sign up", "error")
         else if (teacherChecked)
           window.document.getElementById('sign-to-text').style.display = 'block'
         else
@@ -618,8 +562,17 @@ ANSWER: ${answer}\n`
     }
   }
 
+  const openNotification = (placement, text, type) => {
+    api[type]({
+        message: '  -  ',
+        description: text,
+        placement,
+    });
+  }
+
   return (
     <div className="App">
+      {contextHolder}
       <Header />
       <HashRouter>
         <main className="App-main">
@@ -634,7 +587,7 @@ ANSWER: ${answer}\n`
                 </p>
                 <label>
                   User type:
-                  <input id='login-teacher' type='radio' name='user' value='Teacher' className='log-radio'></input>
+                  <input id='login-teacher' type='radio' checked name='user' value='Teacher' className='log-radio'></input>
                   Teacher
                   <input id='login-student' type='radio' name='user' value='Student' className='log-radio'></input>
                   Student
@@ -663,7 +616,7 @@ ANSWER: ${answer}\n`
               </p>
               <label>
                 User type:
-                <input id='signup-teacher' type='radio' name='user' value='Teacher' className='sign-radio'></input>
+                <input id='signup-teacher' type='radio' checked name='user' value='Teacher' className='sign-radio'></input>
                 Teacher
                 <input id='signup-student' type='radio' name='user' value='Student' className='sign-radio'></input>
                 Student
@@ -688,11 +641,11 @@ ANSWER: ${answer}\n`
                 Repeat password:
                 <input id='signup-pass-repeat' type='password' className='sign-text'></input>
               </label>
-              <button onClick={checkSignup}>Check sign up</button>
-              <Link to='/text' id='sign-to-text' className='log-user'>
+              <button onClick={checkSignup} className='check-login'>Check sign up</button>
+              <Link to='/text' id='sign-to-text' className='log-link'>
                 Sign up
               </Link>
-              <Link to='/exams' id='sign-to-exams' className='log-user'>
+              <Link to='/exams' id='sign-to-exams' className='log-link'>
                 Sign up
               </Link>
             </div>
@@ -758,8 +711,7 @@ ANSWER: ${answer}\n`
                 </div>
                 <p>Select Keywords for make questions:</p>
                 <div id='keywords-container' className='keywords-container'>
-                  {
-                    keywords.map(key => 
+                  { keywords.map(key => 
                       <div key={key} className='keyword-container'>
                         <div id={key} className='key-name-container'>
                           <p
@@ -772,9 +724,7 @@ ANSWER: ${answer}\n`
                             <IoIosArrowBack />
                           </button>
                           <p id={key+'_repetitions'} className='key-repetitions'>
-                            {/* {first15Keys(key) ? '1' : '0'} */}
                             0
-                            {/* 1 */}
                           </p>
                           <button onClick={() => more(key+'_repetitions')} className='arrow'>
                             <IoIosArrowForward />
