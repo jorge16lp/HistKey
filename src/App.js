@@ -6,7 +6,7 @@ import Home from './components/Home'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { TiTick } from 'react-icons/ti'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
-import {notification } from 'antd';
+import { notification, Row, Col } from 'antd';
 
 const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
 // const endPoint = process.env.REACT_APP_API_URI || 'https://histkey-restapi.onrender.com'
@@ -585,18 +585,20 @@ ANSWER: ${answer}\n`
                 <p>
                   Here you can log in the application
                 </p>
-                <label>
+                <label className='form-label'>
                   User type:
-                  <input id='login-teacher' type='radio' checked name='user' value='Teacher' className='log-radio'></input>
-                  Teacher
-                  <input id='login-student' type='radio' name='user' value='Student' className='log-radio'></input>
-                  Student
+                  <div className='log-text'>
+                    <input id='login-teacher' type='radio' checked name='user' value='Teacher' className='log-radio'></input>
+                    Teacher
+                    <input id='login-student' type='radio' name='user' value='Student' className='log-radio'></input>
+                    Student
+                  </div>
                 </label>
-                <label>
+                <label className='form-label'>
                   Email: 
                   <input id='login-email' type='text' className='log-text'></input>
                 </label>
-                <label>
+                <label className='form-label'>
                   Password:
                   <input id='login-pass' type='password' className='log-text'></input>
                 </label>
@@ -611,44 +613,46 @@ ANSWER: ${answer}\n`
             }/>
             <Route path='/signup' element={
               <div className='register-form'>
-              <p>
-                Here you can sign up the application
-              </p>
-              <label>
-                User type:
-                <input id='signup-teacher' type='radio' checked name='user' value='Teacher' className='sign-radio'></input>
-                Teacher
-                <input id='signup-student' type='radio' name='user' value='Student' className='sign-radio'></input>
-                Student
-              </label>
-              <label>
-                Name:
-                <input id='signup-name' type='text' className='sign-text'></input>
-              </label>
-              <label>
-                Surname: 
-                <input id='signup-surname' type='text' className='sign-text'></input>
-              </label>
-              <label>
-                Email: 
-                <input id='signup-email' type='text' className='sign-text'></input>
-              </label>
-              <label>
-                Password:
-                <input id='signup-pass' type='password' className='sign-text'></input>
-              </label>
-              <label>
-                Repeat password:
-                <input id='signup-pass-repeat' type='password' className='sign-text'></input>
-              </label>
-              <button onClick={checkSignup} className='check-login'>Check sign up</button>
-              <Link to='/text' id='sign-to-text' className='log-link'>
-                Sign up
-              </Link>
-              <Link to='/exams' id='sign-to-exams' className='log-link'>
-                Sign up
-              </Link>
-            </div>
+                <p>
+                  Here you can sign up the application
+                </p>
+                <label className='form-label'>
+                  User type:
+                  <div className='sign-text'>
+                    <input id='signup-teacher' type='radio' checked name='user' value='Teacher' className='sign-radio'></input>
+                    Teacher
+                    <input id='signup-student' type='radio' name='user' value='Student' className='sign-radio'></input>
+                    Student
+                  </div>
+                </label>
+                <label className='form-label'>
+                  Name:
+                  <input id='signup-name' type='text' className='sign-text'></input>
+                </label>
+                <label className='form-label'>
+                  Surname: 
+                  <input id='signup-surname' type='text' className='sign-text'></input>
+                </label>
+                <label className='form-label'>
+                  Email: 
+                  <input id='signup-email' type='text' className='sign-text'></input>
+                </label>
+                <label className='form-label'>
+                  Password:
+                  <input id='signup-pass' type='password' className='sign-text'></input>
+                </label>
+                <label className='form-label'>
+                  Repeat password:
+                  <input id='signup-pass-repeat' type='password' className='sign-text'></input>
+                </label>
+                <button onClick={checkSignup} className='check-login'>Check sign up</button>
+                <Link to='/text' id='sign-to-text' className='log-link'>
+                  Sign up
+                </Link>
+                <Link to='/exams' id='sign-to-exams' className='log-link'>
+                  Sign up
+                </Link>
+              </div>
             }/>
             <Route path='/exams' element={
               <div className='examsIdSide'>

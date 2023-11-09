@@ -58,12 +58,17 @@ body {
       flex-direction: column;
       gap: 20px;
 
+      .form-label {
+        display: grid;
+        grid-template-columns: 50% 50%;
+      }
+
       .log-radio {
         margin-left: 20px;
       }
 
       .log-text {
-        margin-left: 10px;
+        margin-right: 20rem;
       }
 
       .check-login {
@@ -110,7 +115,7 @@ body {
       }
 
       .sign-text {
-        margin-left: 10px;
+        margin-right: 20rem;
       }
     }
 
