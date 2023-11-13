@@ -119,10 +119,11 @@ body {
       }
     }
 
-    .register-button {
-      background-color: #3b414d;
+    .login-button {
+      background-color: white;
       border: solid 2px white;
-      color: white;
+      color: #3b414d;
+      width: 10rem;
       padding: 6px;
       margin: 6px;
       border-radius: 5px;
@@ -130,9 +131,27 @@ body {
       font-family: 'Courier New', Courier, monospace;
     }
 
-    .register-button:hover {
-      background-color: white;
+    .register-button {
+      background-color: #3b414d;
+      border: solid 2px white;
+      color: white;
+      width: 10rem;
+      padding: 6px;
+      margin: 6px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .login-button:hover {
+      background-color: rgb(214, 214, 214);
       color: #3b414d;
+      cursor: pointer;
+    }
+
+    .register-button:hover {
+      background-color: #4f5666;
+      color: white;
       cursor: pointer;
     }
 

@@ -8,7 +8,7 @@ export default function Home() {
         <p>
             Please, register yourself to use it.
         </p>
-        <Link to='/login' className='register-button'>
+        <Link to='/login' className='login-button'>
             Log in
         </Link>
         <Link to='/signup' className='register-button'>

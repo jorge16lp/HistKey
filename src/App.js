@@ -6,10 +6,10 @@ import Home from './components/Home'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { TiTick } from 'react-icons/ti'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
-import { notification, Row, Col } from 'antd';
+import { Card, notification } from 'antd';
 
-// const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
-const endPoint = process.env.REACT_APP_API_URI || 'https://histkey-restapi.onrender.com'
+const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
+// const endPoint = process.env.REACT_APP_API_URI || 'https://histkey-restapi.onrender.com'
 var text = ''
 
 export default function App() {
@@ -19,7 +19,10 @@ export default function App() {
   const [questions, setQuestions] = useState([])
   const [answers, setAnswers] = useState([])
 
+  const [loading, setLoading] = useState(false)
+
   const fetchData = async () => {
+    setLoading(true)
     try {
       clearAll()
       text = window.document.getElementById('text').value
@@ -34,12 +37,14 @@ export default function App() {
       });
       const data = await response.json();
       setKeywords(data.keywords)
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
   }
 
   const fetchQuestions = async () => {
+    setLoading(true)
     try {
       var repetitions = window.document.getElementsByClassName('key-repetitions')
       var keysMap = new Map()
@@ -58,6 +63,7 @@ export default function App() {
       });
       const data = await response.json();
       setQuestions(data.questions)
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -252,7 +258,7 @@ ANSWER: ${answer}\n`
       // console.log(contenidoTexto)
       var id = prompt("Please, introduce the public id for the exam.\nAfter saving it, it cannot be overwritten. Make sure you don't want to make any more changes.", "exam100")
       // console.log(id)
-      const response = await fetch(endPoint + '/add-exam', {
+      const response = await fetch(endPoint + '/exam', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json'
@@ -297,15 +303,11 @@ ANSWER: ${answer}\n`
         var formEmail = window.document.getElementById('login-email').value
         var password = window.document.getElementById('login-pass').value
         if (window.document.getElementById('login-teacher').checked) {
-          const response = await fetch(endPoint + '/find-teacher-by-email', {
-            method: 'POST',
+          const response = await fetch(endPoint + `/teacher?email=${formEmail}&pass=${password}`, {
+            method: 'GET',
             headers: { 
               'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 
-              email: formEmail,
-              pass: password
-            }) 
+            }
           });
           const data = await response.json()
           // console.log(data)
@@ -314,15 +316,11 @@ ANSWER: ${answer}\n`
           else
             window.document.getElementById('log-to-text').style.display = 'block'      
         } else {
-          const response = await fetch(endPoint + '/find-student-by-email', {
-            method: 'POST',
+          const response = await fetch(endPoint + `/student?email=${formEmail}&pass=${password}`, {
+            method: 'GET',
             headers: { 
               'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 
-              email: formEmail,
-              pass: password
-            }) 
+            }
           });
           const data = await response.json()
           // console.log(data)
@@ -364,7 +362,7 @@ ANSWER: ${answer}\n`
       else { // insertar nuevo usuario en la bd
         // obtener el tipo de usuario a insertar
         var user = window.document.getElementById('signup-teacher').checked ? 'teacher' : 'student'
-        const response = await fetch(endPoint + '/add-user', {
+        const response = await fetch(endPoint + '/user', {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json'
@@ -434,18 +432,16 @@ ANSWER: ${answer}\n`
   }
 
   const findExamByPublicId = async () => {
+    setLoading(true)
     try {
       var p_id = window.document.getElementById('exam-id-txt').value
       // console.log(p_id)
 
-      const response = await fetch(endPoint + '/find-exam-by-publicId', {
-        method: 'POST',
+      const response = await fetch(endPoint + `/exam/${p_id}`, {
+        method: 'GET',
         headers: { 
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ 
-          public_id: p_id
-        }) 
+        }
       });
       const data = await response.json()
       // console.log(data)
@@ -509,6 +505,7 @@ ANSWER: ${answer}\n`
       }
       // console.log("array",answersArray)
       setAnswers(answersArray)
+      setLoading(false)
       // console.log("state: ",answers)
     } catch (error) {
       console.log(error);
@@ -673,6 +670,15 @@ ANSWER: ${answer}\n`
                 <Link to='/' onClick={clearAll} className='logout-link'>
                   Log out
                 </Link>
+                { loading && (
+                  <div>
+                    <p>Loading exam</p>
+                    <Card loading></Card>
+                  </div>
+                )}
+                { !loading && answers.length == 0 && (
+                  <p>No exam found...</p>
+                )}
                 <div id='exam-questions-container' className='exam-questions-container'>
                 </div>
                 <button id='check-answers-button' onClick={checkExamAnswers} className='link'>Check answers</button>
@@ -714,6 +720,15 @@ ANSWER: ${answer}\n`
                   </Link>
                 </div>
                 <p>Select Keywords for make questions:</p>
+                { loading && (
+                  <div>
+                    <p>Generating keywords</p>
+                    <Card loading></Card>
+                  </div>
+                )}
+                { !loading && keywords.length == 0 && (
+                  <p>No keywords found for this text...</p>
+                )}
                 <div id='keywords-container' className='keywords-container'>
                   { keywords.map(key => 
                       <div key={key} className='keyword-container'>
@@ -756,6 +771,15 @@ ANSWER: ${answer}\n`
                   Log out
                 </Link>
                 <p>Edit Questions:</p>
+                { loading && (
+                  <div>
+                    <p>Generating questions</p>
+                    <Card loading></Card>
+                  </div>
+                )}
+                { !loading && questions.length == 0 && (
+                  <p>No questions generated...</p>
+                )}
                 <div id='questions-container'>
                   {
                     questions.map(q => {
