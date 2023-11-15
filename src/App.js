@@ -24,22 +24,25 @@ export default function App() {
   const fetchData = async () => {
     setLoading(true)
     try {
-      clearAll()
       text = window.document.getElementById('text').value
-      const response = await fetch(endPoint + '/keywords', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json'
-         },
-        body: JSON.stringify({ 
-          theText: text
-        }) 
-      });
-      const data = await response.json();
-      setKeywords(data.keywords)
+      if (text !== "") {
+        const response = await fetch(endPoint + '/keywords', {
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+            theText: text
+          }) 
+        })
+        const data = await response.json()
+        setKeywords(data.keywords)
+      } else {
+        openNotification("top", "Text introduced was empty", "error")
+      }
       setLoading(false)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   }
 
@@ -48,21 +51,29 @@ export default function App() {
     try {
       var repetitions = window.document.getElementsByClassName('key-repetitions')
       var keysMap = new Map()
-      for (var i = 0; i < repetitions.length; i++)
+      var numberOfQuestions = 0
+      for (var i = 0; i < repetitions.length; i++) {
         keysMap.set(keywords[i], repetitions[i].textContent)
-      const response = await fetch(endPoint + '/questions', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json'
-         },
-        body: JSON.stringify({ 
-          theText: text,
-          keywords: Array.from(keysMap.keys()),
-          repetitions: Array.from(keysMap.values())
-        }) 
-      });
-      const data = await response.json();
-      setQuestions(data.questions)
+        if (repetitions[i].textContent !== "0") numberOfQuestions += 1
+      }
+      // console.log(numberOfQuestions)
+      if (numberOfQuestions !== 0) {
+        const response = await fetch(endPoint + '/questions', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ 
+            theText: text,
+            keywords: Array.from(keysMap.keys()),
+            repetitions: Array.from(keysMap.values())
+          }) 
+        });
+        const data = await response.json();
+        setQuestions(data.questions)
+      }  else {
+        openNotification("top", "Any keyword was selected to generate questions", "error")
+      }
       setLoading(false)
     } catch (error) {
       console.log(error);
@@ -87,7 +98,6 @@ export default function App() {
   const editQuestion = async (id) => {
     try {
       // console.log('editando la q: ', id)
-
       var ps = window.document.getElementById(id).children[0].children
       for (var i=0; i < 5; i++) 
         ps[i].contentEditable = true
@@ -102,13 +112,23 @@ export default function App() {
   const acceptQuestion = async (id) => {
     try {
       // console.log('aceptando la q: ', id)
-
       var ps = window.document.getElementById(id).children[0].children
-      for (var i=0; i < 5; i++) 
-        ps[i].contentEditable = false
+      var allOk = true
+      // console.log(ps)
+      for (var i=0; i < 5; i++) {
+        // console.log(ps[i].textContent)
+        if (ps[i].textContent !== "")
+          ps[i].contentEditable = false
+        else {
+          allOk = false
+          openNotification("top", "A question part can not be empty", "error")
+        }
+      }
 
-      window.document.getElementById(id).children[1].children[1].hidden = false
-      window.document.getElementById(id).children[1].children[0].hidden = true
+      if (allOk) {
+        window.document.getElementById(id).children[1].children[1].hidden = false
+        window.document.getElementById(id).children[1].children[0].hidden = true
+      }
     } catch (error) {
       console.log(error);
     }
@@ -286,8 +306,16 @@ ANSWER: ${answer}\n`
       var key = window.document.getElementById('new-key').value
       if (key === '')
         openNotification("top", "New word is empty", "error")
-      else 
-        setKeywords((prevKeywords) => [...prevKeywords, key])
+      else {
+        setKeywords((prevKeywords) => {
+          if (!prevKeywords.includes(key))
+            return [...prevKeywords, key]
+          else
+            openNotification("top", "Word is already in the list", "error")
+          return prevKeywords
+        })
+      }
+      window.document.getElementById('new-key').value = ""
     } catch (error) {
       console.log(error);
     }
@@ -444,71 +472,73 @@ ANSWER: ${answer}\n`
         }
       });
       const data = await response.json()
-      // console.log(data)
+      console.log(data)
 
-      var bigQuestions = data.exam.questions.split('\n----------\n')
       var answersArray = []
-      // console.log(bigQuestions)
-      for (var i=0; i < bigQuestions.length; i++) {
-        if (bigQuestions[i] !== "") {
-          var questionParts = bigQuestions[i].split(':')
-          if (questionParts.length > 2) {
-            for (var k = 1; k <= questionParts.length - 2; k++)
-              questionParts[0] += ": " + questionParts[k]
-            questionParts[1] = questionParts[questionParts.length-1]
+      if (data.exam !== null) {
+        var bigQuestions = data.exam.questions.split('\n----------\n')
+        // console.log(bigQuestions)
+        for (var i=0; i < bigQuestions.length; i++) {
+          if (bigQuestions[i] !== "") {
+            var questionParts = bigQuestions[i].split(':')
+            if (questionParts.length > 2) {
+              for (var k = 1; k <= questionParts.length - 2; k++)
+                questionParts[0] += ": " + questionParts[k]
+              questionParts[1] = questionParts[questionParts.length-1]
+            }
+            // console.log(questionParts)
+            var question = questionParts[0]
+            var options = questionParts[1].split(',')
+            var answer = ""
+            if (options[4] === "A") answer = options[0]
+            else if (options[4] === "B") answer = options[1]
+            else if (options[4] === "C") answer = options[2]
+            else answer = options[3]
+            answersArray.push(answer)
+            options.pop()
+            // console.log(question)
+            // console.log(options)
+            // console.log(answer)
+
+            var questionsContainer = window.document.getElementById('exam-questions-container')
+            var questionContainer = window.document.createElement('div')
+            questionContainer.className = 'exam-question'
+            questionContainer.style.display = 'flex'
+            questionContainer.style.flexDirection = 'column'
+            questionContainer.style.border = '2px solid white'
+            questionContainer.style.borderRadius = '0.5rem'
+            questionContainer.style.padding = '1rem'
+            questionContainer.style.margin = '1rem'
+            // colocar el enunciado de la pregunta
+            var questionText = window.document.createElement('p')
+            questionText.textContent = question
+            questionContainer.appendChild(questionText)
+            // colocar las opciones
+            for (var o=0; o < options.length; o++) {
+              var optionContainer = window.document.createElement('div')
+              var radioInput = window.document.createElement('input')
+              radioInput.style.margin = '1rem'
+              radioInput.type = 'radio'
+              radioInput.name = `option_Q${i}`
+
+              var label = window.document.createElement('label')
+              label.textContent = options[o]
+
+              optionContainer.appendChild(radioInput)
+              optionContainer.appendChild(label)
+              questionContainer.appendChild(optionContainer)
+            }
+
+            questionsContainer.appendChild(questionContainer)          
           }
-          // console.log(questionParts)
-          var question = questionParts[0]
-          var options = questionParts[1].split(',')
-          var answer = ""
-          if (options[4] === "A") answer = options[0]
-          else if (options[4] === "B") answer = options[1]
-          else if (options[4] === "C") answer = options[2]
-          else answer = options[3]
-          answersArray.push(answer)
-          options.pop()
-          // console.log(question)
-          // console.log(options)
-          // console.log(answer)
-
-          var questionsContainer = window.document.getElementById('exam-questions-container')
-          var questionContainer = window.document.createElement('div')
-          questionContainer.className = 'exam-question'
-          questionContainer.style.display = 'flex'
-          questionContainer.style.flexDirection = 'column'
-          questionContainer.style.border = '2px solid white'
-          questionContainer.style.borderRadius = '0.5rem'
-          questionContainer.style.padding = '1rem'
-          questionContainer.style.margin = '1rem'
-          // colocar el enunciado de la pregunta
-          var questionText = window.document.createElement('p')
-          questionText.textContent = question
-          questionContainer.appendChild(questionText)
-          // colocar las opciones
-          for (var o=0; o < options.length; o++) {
-            var optionContainer = window.document.createElement('div')
-            var radioInput = window.document.createElement('input')
-            radioInput.style.margin = '1rem'
-            radioInput.type = 'radio'
-            radioInput.name = `option_Q${i}`
-
-            var label = window.document.createElement('label')
-            label.textContent = options[o]
-
-            optionContainer.appendChild(radioInput)
-            optionContainer.appendChild(label)
-            questionContainer.appendChild(optionContainer)
-          }
-
-          questionsContainer.appendChild(questionContainer)          
         }
+        // console.log("array",answersArray)
       }
-      // console.log("array",answersArray)
       setAnswers(answersArray)
       setLoading(false)
       // console.log("state: ",answers)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   }
 
@@ -677,11 +707,17 @@ ANSWER: ${answer}\n`
                   </div>
                 )}
                 { !loading && answers.length == 0 && (
-                  <p>No exam found...</p>
+                  <p>No exam found with this public id...</p>
                 )}
                 <div id='exam-questions-container' className='exam-questions-container'>
                 </div>
-                <button id='check-answers-button' onClick={checkExamAnswers} className='link'>Check answers</button>
+                { answers.length == 0 ?
+                  <Link to='/exams' onClick={clearDoneExam} id='back-exam-link' className='back-exam-link'>
+                    Go Back
+                  </Link>
+                  :
+                  <button id='check-answers-button' onClick={checkExamAnswers} className='link'>Check answers</button>
+                }
                 <Link to='/exams' onClick={clearDoneExam} id='fin-exam-link' className='fin-exam-link'>
                   Finnish exam
                 </Link>

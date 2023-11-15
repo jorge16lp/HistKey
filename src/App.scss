@@ -190,6 +190,23 @@ body {
       display: flex;
       flex-direction: column;
 
+      .back-exam-link {
+        background-color: #3b414d;
+        border: solid 2px white;
+        color: white;
+        padding: 6px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-family: 'Courier New', Courier, monospace;
+        align-self: center;
+      }
+
+      .back-exam-link:hover {
+        background-color: white;
+        color: #3b414d;
+        cursor: pointer;
+      }
+
       .fin-exam-link {
         background-color: #3b414d;
         border: solid 2px white;
@@ -203,10 +220,10 @@ body {
       }
 
       .fin-exam-link:hover {
-      background-color: white;
-      color: #3b414d;
-      cursor: pointer;
-    }
+        background-color: white;
+        color: #3b414d;
+        cursor: pointer;
+      }
     }
 
     .textSide {
@@ -419,6 +436,7 @@ body {
       border: solid 2px white;
       color: white;
       padding: 6px;
+      margin: 0.6rem;
       border-radius: 5px;
       text-decoration: none;
       font-family: 'Courier New', Courier, monospace;
