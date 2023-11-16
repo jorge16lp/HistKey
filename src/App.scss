@@ -17,7 +17,7 @@ body {
   .App-header {
     background-color: #3b414d;
     color: #3b414d;
-    margin-top: 20px;
+    margin-top: 2rem;
     display: grid;
     grid-template-columns: 75% 25%;
     align-items: center;
@@ -51,12 +51,12 @@ body {
     display: grid;
     grid-template: 1fr / 90%;
     justify-content: center;
-    font-size: calc(10px + 2vmin);
+    font-size: calc(1rem + 2vmin);
 
     .register-form {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 2rem;
 
       .form-label {
         display: grid;
@@ -64,7 +64,7 @@ body {
       }
 
       .log-radio {
-        margin-left: 20px;
+        margin-left: 2rem;
       }
 
       .log-text {
@@ -73,14 +73,14 @@ body {
 
       .check-login {
         background-color: #3b414d;
-        border: solid 2px white;
+        border: solid 0.2rem white;
         color: white;
         font-size: 1.7rem;
-        padding: 6px;
-        border-radius: 5px;
+        padding: 0.6rem;
+        border-radius: 0.5rem;
         text-decoration: none;
         font-family: 'Courier New', Courier, monospace;
-        max-width: 300px;
+        max-width: 30rem;
         align-self: center;
       }
 
@@ -93,14 +93,14 @@ body {
       .log-link {
         display: none;
         background-color: #3b414d;
-        border: solid 2px white;
+        border: solid 0.2rem white;
         color: white;
         font-size: 2rem;
-        padding: 6px;
-        border-radius: 5px;
+        padding: 0.6rem;
+        border-radius: 0.5rem;
         text-decoration: none;
         font-family: 'Courier New', Courier, monospace;
-        max-width: 200px;
+        max-width: 20rem;
         align-self: center;
       }
 
@@ -111,7 +111,7 @@ body {
       }
 
       .sign-radio {
-        margin-left: 20px;
+        margin-left: 2rem;
       }
 
       .sign-text {
@@ -121,24 +121,24 @@ body {
 
     .login-button {
       background-color: white;
-      border: solid 2px white;
+      border: solid 0.2rem white;
       color: #3b414d;
       width: 10rem;
-      padding: 6px;
-      margin: 6px;
-      border-radius: 5px;
+      padding: 0.6rem;
+      margin: 0.6rem;
+      border-radius: 0.5rem;
       text-decoration: none;
       font-family: 'Courier New', Courier, monospace;
     }
 
     .register-button {
       background-color: #3b414d;
-      border: solid 2px white;
+      border: solid 0.2rem white;
       color: white;
       width: 10rem;
-      padding: 6px;
-      margin: 6px;
-      border-radius: 5px;
+      padding: 0.6rem;
+      margin: 0.6rem;
+      border-radius: 0.5rem;
       text-decoration: none;
       font-family: 'Courier New', Courier, monospace;
     }
@@ -157,15 +157,15 @@ body {
 
     .logout-link {
       background-color: #3b414d;
-      border: solid 2px white;
+      border: solid 0.2rem white;
       color: white;
       font-size: 1.3rem;
       margin-right: 4rem;
-      padding: 6px;
-      border-radius: 5px;
+      padding: 0.6rem;
+      border-radius: 0.5rem;
       text-decoration: none;
       font-family: 'Courier New', Courier, monospace;
-      max-width: 300px;
+      max-width: 30rem;
       align-self: last baseline;
     }
 
@@ -192,10 +192,11 @@ body {
 
       .back-exam-link {
         background-color: #3b414d;
-        border: solid 2px white;
+        border: solid 0.2rem white;
         color: white;
-        padding: 6px;
-        border-radius: 5px;
+        padding: 0.6rem;
+        margin: 0.6rem;
+        border-radius: 0.5rem;
         text-decoration: none;
         font-family: 'Courier New', Courier, monospace;
         align-self: center;
@@ -209,10 +210,10 @@ body {
 
       .fin-exam-link {
         background-color: #3b414d;
-        border: solid 2px white;
+        border: solid 0.2rem white;
         color: white;
-        padding: 6px;
-        border-radius: 5px;
+        padding: 0.6rem;
+        border-radius: 0.5rem;
         text-decoration: none;
         font-family: 'Courier New', Courier, monospace;
         align-self: center;
@@ -242,7 +243,7 @@ body {
       .textArea {
         width: 70rem;
         height: 22rem;
-        margin-bottom: 15px;
+        margin-bottom: 1.5rem;
       }
 
       .text-links-container {
@@ -253,7 +254,7 @@ body {
     }
 
     .keywords {
-      margin-top: 15px;
+      margin-top: 1.5rem;
       display: flex;
       flex-direction: column;
 
@@ -263,14 +264,14 @@ body {
 
         .selection-keywords-container {
           display: flex;
-          gap: 15px;
+          gap: 1.5rem;
 
           .selection-keywords-button {
             background-color: #3b414d;
-            border: solid 2px white;
+            border: solid 0.2rem white;
             color: white;
-            padding: 6px;
-            border-radius: 5px;
+            padding: 0.6rem;
+            border-radius: 0.5rem;
             text-decoration: none;
             font-family: 'Courier New', Courier, monospace;
             font-size: 1.3rem;
@@ -287,7 +288,7 @@ body {
       }
 
       .keywords-container {
-        margin: -20px 0 20px;
+        margin: -2rem 0 2rem;
         display: grid;
         grid-template-columns: repeat(8, 1fr);
 
@@ -295,16 +296,16 @@ body {
           display: grid;
           grid-template: 1fr 1fr / 100%;
           height: 5rem;
-          border: solid 2px white;
+          border: solid 0.2rem white;
           border-radius: 0.5rem;
-          margin: 5px;
+          margin: 0.5rem;
 
           .key-name-container {
             grid-column: span 3;
             background-color: white;
             border-top-left-radius: 0.3rem;
             border-top-right-radius: 0.3rem;
-            margin: 2px;
+            margin: 0.2rem;
 
             .key-name {
               font-size: 0.8rem;
@@ -349,20 +350,20 @@ body {
 
           .input-add-keyword {
             margin: 1rem;
-            margin-right: 5px;
+            margin-right: 0.5rem;
           }
 
           .button-add-keyword {
             background-color: #3b414d;
-            border: solid 2px white;
+            border: solid 0.2rem white;
             color: white;
             text-decoration: none;
             font-family: 'Courier New', Courier, monospace;
             font-size: 1.5rem;
-            border-radius: 5px;
+            border-radius: 0.5rem;
             margin: 1rem;
             margin-left: 0;
-            padding: 6px;
+            padding: 0.6rem;
             min-width: 2.5rem;
           }
 
@@ -380,7 +381,7 @@ body {
       flex-direction: column;
 
       .question {
-        border: 2px solid white;
+        border: 0.2rem solid white;
         border-radius: 0.5rem;
         padding: 1rem;
         margin: 1rem;
@@ -396,12 +397,12 @@ body {
           .icon-button {
             border: none;
             background-color: #3b414d;
-            padding: 5px;
+            padding: 0.5rem;
           }
 
           .icon-button:hover {
-            border: 2px solid white;
-            border-radius: 5px;
+            border: 0.2rem solid white;
+            border-radius: 0.5rem;
             cursor: pointer;
           }
         }
@@ -414,14 +415,14 @@ body {
         .download-questions-container {
           display: flex;
           justify-content: space-evenly;
-          gap: 15px;
+          gap: 1.5rem;
 
           a {
             background-color: #3b414d;
             color: white;
-            // border: solid 2px white;
+            // border: solid 0.2rem white;
             text-decoration: none;
-            padding: 5px;
+            padding: 0.5rem;
           }
 
           a:hover {
@@ -433,11 +434,11 @@ body {
 
     .link {
       background-color: #3b414d;
-      border: solid 2px white;
+      border: solid 0.2rem white;
       color: white;
-      padding: 6px;
+      padding: 0.6rem;
       margin: 0.6rem;
-      border-radius: 5px;
+      border-radius: 0.5rem;
       text-decoration: none;
       font-family: 'Courier New', Courier, monospace;
       align-self: center;
