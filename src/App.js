@@ -8,7 +8,8 @@ import { TiTick } from 'react-icons/ti'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import { Card, notification } from 'antd';
 
-const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
+// const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
+const endPoint = process.env.REACT_APP_API_URI || 'https://histkey-restapi.vercel.app'
 // const endPoint = process.env.REACT_APP_API_URI || 'https://histkey-restapi.onrender.com'
 var text = ''
 
