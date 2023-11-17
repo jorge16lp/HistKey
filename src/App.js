@@ -341,8 +341,11 @@ ANSWER: ${answer}\n`
           // console.log(data)
           if (data.user === null)
             openNotification("top", "Data introduced is incorrect", "error")
-          else
-            window.document.getElementById('log-to-text').style.display = 'block'      
+          else {
+            window.document.getElementById('log-to-text').style.display = 'block'
+            window.document.getElementById('check-login').style.display = 'none' 
+            window.document.getElementById('login-success').style.display = 'block' 
+          }    
         } else {
           const response = await fetch(endPoint + `/student?email=${formEmail}&pass=${password}`, {
             method: 'GET',
@@ -354,8 +357,11 @@ ANSWER: ${answer}\n`
           // console.log(data)
           if (data.user === null)
             openNotification("top", "Data introduced is incorrect", "error")
-          else
-            window.document.getElementById('log-to-exams').style.display = 'block'  
+          else {
+            window.document.getElementById('log-to-exams').style.display = 'block' 
+            window.document.getElementById('check-login').style.display = 'none' 
+            window.document.getElementById('login-success').style.display = 'block' 
+          } 
         }
       }
     } catch (error) {
@@ -409,10 +415,14 @@ ANSWER: ${answer}\n`
           openNotification("top", "The email is already signed up", "error")
         else if (data.user === null)
           openNotification("top", "There is a problem with de user sign up", "error")
-        else if (teacherChecked)
-          window.document.getElementById('sign-to-text').style.display = 'block'
-        else
-          window.document.getElementById('sign-to-exams').style.display = 'block'
+        else {
+          if (teacherChecked)
+            window.document.getElementById('sign-to-text').style.display = 'block'
+          else
+            window.document.getElementById('sign-to-exams').style.display = 'block'
+          window.document.getElementById('check-signup').style.display = 'none'
+          window.document.getElementById('signup-success').style.display = 'block'
+        }
       }
     } catch (error) {
       console.log(error);
@@ -629,7 +639,8 @@ ANSWER: ${answer}\n`
                   Password:
                   <input id='login-pass' type='password' className='log-text'></input>
                 </label>
-                <button onClick={checkLogin} className='check-login'>Check log in</button>
+                <button id='check-login' onClick={checkLogin} className='check-login'>Check log in</button>
+                <p id='login-success' className='login-success'>Log in successful, please click in the next link to continue</p>
                 <Link to='/text' id='log-to-text' className='log-link'>
                   Log in
                 </Link>
@@ -672,7 +683,8 @@ ANSWER: ${answer}\n`
                   Repeat password:
                   <input id='signup-pass-repeat' type='password' className='sign-text'></input>
                 </label>
-                <button onClick={checkSignup} className='check-login'>Check sign up</button>
+                <button id='check-signup' onClick={checkSignup} className='check-login'>Check sign up</button>
+                <p id='signup-success' className='signup-success'>Sign up successful, please click in the next link to continue</p>
                 <Link to='/text' id='sign-to-text' className='log-link'>
                   Sign up
                 </Link>

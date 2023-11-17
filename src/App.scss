@@ -90,6 +90,14 @@ body {
         cursor: pointer;
       }
 
+      .signup-success {
+        display: none;
+      }
+
+      .login-success {
+        display: none;
+      }
+
       .log-link {
         display: none;
         background-color: #3b414d;
