@@ -699,7 +699,7 @@ ANSWER: ${answer}\n`
                   Log out
                 </Link>
                 <div className='exams-id-container'>
-                  <p>use a public exam id to find it</p>
+                  <p>Use a public exam id to find it</p>
                   <input id='exam-id-txt' placeholder='exam id' type='text' className='exam-id-txt'></input>
                   <Link to='/exam' onClick={findExamByPublicId} className='link'>
                     Search exam
