@@ -731,7 +731,7 @@ ANSWER: ${answer}\n`
                   <button id='check-answers-button' onClick={checkExamAnswers} className='link'>Check answers</button>
                 }
                 <Link to='/exams' onClick={clearDoneExam} id='fin-exam-link' className='fin-exam-link'>
-                  Finnish exam
+                  Finish exam
                 </Link>
               </div>
             }/>
