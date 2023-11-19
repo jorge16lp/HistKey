@@ -81,11 +81,13 @@ body {
         text-decoration: none;
         font-family: 'Courier New', Courier, monospace;
         max-width: 30rem;
+        min-height: 4rem;
         align-self: center;
       }
 
       .check-login:hover {
         background-color: white;
+        border: solid 0.2rem white;
         color: #3b414d;
         cursor: pointer;
       }
@@ -258,6 +260,26 @@ body {
         width: 100%;
         display: flex;
         justify-content: space-evenly;
+      }
+
+      .demo-link {
+        background-color: #3b414d;
+        border: solid 0.2rem white;
+        color: white;
+        padding: 0.6rem;
+        margin: 0.6rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        font-family: 'Courier New', Courier, monospace;
+        align-self: center;
+        height: 2.8rem;
+      }
+  
+      .demo-link:hover {
+        background-color: white;
+        border: solid 0.2rem white;
+        color: #3b414d;
+        cursor: pointer;
       }
     }
 

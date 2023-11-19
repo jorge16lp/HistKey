@@ -6,7 +6,7 @@ import Home from './components/Home'
 import { FaEdit, FaTrash } from 'react-icons/fa'
 import { TiTick } from 'react-icons/ti'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
-import { Card, notification } from 'antd';
+import { Button, Card, notification } from 'antd';
 
 // const endPoint = process.env.REACT_APP_API_URI || 'http://localhost:3001'
 const endPoint = process.env.REACT_APP_API_URI || 'https://histkey-restapi.onrender.com'
@@ -81,15 +81,17 @@ export default function App() {
   }
 
   const chargeDemoText = async () => {
+    setLoading(true)
     try {
       const response = await fetch(endPoint + '/read-demo-file', {
         method: 'GET',
         headers: { 
           'Content-Type': 'application/json'
-         }
+        }
       });
       const data = await response.json()
       window.document.getElementById('text').value = data.demoText
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -322,6 +324,7 @@ ANSWER: ${answer}\n`
   }
 
   const checkLogin = async () => {
+    setLoading(true)
     try {
       // validación de campos
       if (!window.document.getElementById('login-teacher').checked
@@ -364,12 +367,14 @@ ANSWER: ${answer}\n`
           } 
         }
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
   }
 
   const checkSignup = async () => {
+    setLoading(true)
     try {
       // validación de campos
       var teacherChecked = window.document.getElementById('signup-teacher').checked 
@@ -424,6 +429,7 @@ ANSWER: ${answer}\n`
           window.document.getElementById('signup-success').style.display = 'block'
         }
       }
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -639,7 +645,7 @@ ANSWER: ${answer}\n`
                   Password:
                   <input id='login-pass' type='password' className='log-text'></input>
                 </label>
-                <button id='check-login' onClick={checkLogin} className='check-login'>Check log in</button>
+                <Button id='check-login' onClick={checkLogin} className='check-login' loading={loading}>Check log in</Button>
                 <p id='login-success' className='login-success'>Log in successful, please click in the next link to continue</p>
                 <Link to='/text' id='log-to-text' className='log-link'>
                   Log in
@@ -683,7 +689,7 @@ ANSWER: ${answer}\n`
                   Repeat password:
                   <input id='signup-pass-repeat' type='password' className='sign-text'></input>
                 </label>
-                <button id='check-signup' onClick={checkSignup} className='check-login'>Check sign up</button>
+                <Button id='check-signup' onClick={checkSignup} className='check-login' loading={loading}>Check sign up</Button>
                 <p id='signup-success' className='signup-success'>Sign up successful, please click in the next link to continue</p>
                 <Link to='/text' id='sign-to-text' className='log-link'>
                   Sign up
@@ -748,7 +754,7 @@ ANSWER: ${answer}\n`
                   <p>or directly paste your text</p>
                   <textarea id='text' className='textArea'></textarea>
                   <div className='text-links-container'>
-                    <button onClick={chargeDemoText} className='link'>Use demo text</button>
+                    <Button onClick={chargeDemoText} className='demo-link' loading={loading}>Use demo text</Button>
                     <Link to='/keywords' onClick={fetchData} className='link'>
                         Search Keywords
                     </Link>
